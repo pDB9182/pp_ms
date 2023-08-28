@@ -1,46 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CellScript : MonoBehaviour
 {
-    private Vector2 touchVector2;
-    private CellState state;
+    private Toggle mToggle;
+    private CellState mState;
 
     // Start is called before the first frame update
     void Start()
     {
-        touchVector2 = Vector2.zero;
-        state = CellState.Close;
+        mToggle = GetComponent<Toggle>();
+        mToggle.isOn = false;
+        mToggle.onValueChanged.AddListener(OnValueChanged);
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnValueChanged(bool bol)
     {
-
-#if UNITY_EDITOR
-        if (Input.GetMouseButtonDown(0))
+        if (mState.Equals(CellState.Mine))
         {
-            state = CellState.Click;
-            touchVector2 = Input.mousePosition;
+            Debug.Log("Game Over");
         }
-
-        if (Input.GetMouseButtonUp(0))
+        else
         {
-            if (state == CellState.Click)
-            {
-                state = CellState.Open;
-                // Open Trigger
-            }
-
-            touchVector2 = Vector2.zero;
+            Debug.Log("Game");
         }
-#else
-        if (Input.touchCount > 0)
-        { 
-            touchVector2 = Input.GetTouch(0).position;
-        }
-#endif
+        mToggle.onValueChanged.RemoveAllListeners();
+        Destroy(mToggle);
+        mToggle = null;
     }
-
 }
