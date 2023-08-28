@@ -3,5 +3,6 @@ using System;
 [Serializable]
 public enum CellState
 {
-    Close, Click, Open,
+    // Close, Click, Open,
+    None, Number, Mine,
 }
